@@ -1,0 +1,22 @@
+# LLM & embeddings
+google-genai>=1.0.0     # Google Gen AI SDK — used to make API calls to Gemini 2.5 Flash for concept extraction and answer generation
+pageindex>=0.1.0        # PageIndex client — used for vectorless, reasoning-based guideline retrieval in Step 2A
+
+# PDF processing
+pypdf>=4.0.0            # reads PDF files and extracts raw text from them
+pdfplumber>=0.10.0      # stronger PDF reader — better at handling tables and complex layouts in clinical documents
+
+# Environment
+python-dotenv>=1.0.0    # loads .env file into os.getenv() so API keys are accessible at runtime
+
+# Data validation
+pydantic>=2.0.0         # enforces strict data structures — ensures LLM outputs match expected shapes before moving to the next step
+
+# Logging
+loguru>=0.7.0           # logging library — provides timestamped, color-coded terminal and file logs across all pipeline steps
+
+# Web server
+fastapi>=0.100.0        # async web framework — serves the chat API and static UI
+uvicorn[standard]>=0.22.0  # ASGI server to run FastAPI
+
+# Testing

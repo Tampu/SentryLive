@@ -1,0 +1,284 @@
+{
+    "guidelines": {
+        "andre-et-al-2022-biomarkers-for-adjuvant-endocrine-and-chemotherapy-in-early-stage-breast-cancer-asco-guideline-update": {
+            "doc_id": "pi-cmrdy6czx015z01o20qartsht",
+            "year": 2022,
+            "is_update": true
+        },
+        "desai-et-al-2022-q-and-a-a-new-standard-of-care-for-germline-brca1-and-or-brca2-mutation-carriers-with-early-stage": {
+            "doc_id": "pi-cmrdy6e2u016101o2awhytmii",
+            "year": 2022,
+            "is_update": true
+        },
+        "burstein-et-al-2021-endocrine-treatment-and-targeted-therapy-for-hormone-receptor-positive-human-epidermal-growth": {
+            "doc_id": "pi-cmrdy6f6e016201o2nc8w7f1e",
+            "year": 2021,
+            "is_update": true
+        },
+        "moy-et-al-2022-chemotherapy-and-targeted-therapy-for-human-epidermal-growth-factor-receptor-2-negative-metastatic": {
+            "doc_id": "pi-cmrdy6g5s016301o2spu7huvt",
+            "year": 2022,
+            "is_update": true
+        },
+        "moy-et-al-2023-chemotherapy-and-targeted-therapy-for-endocrine-pretreated-or-hormone-receptor-negative-metastatic": {
+            "doc_id": "pi-cmrdy6h84016401o28mwzonue",
+            "year": 2023,
+            "is_update": true
+        },
+        "raab-et-al-2022-biomarkers-for-adjuvant-endocrine-and-chemotherapy-in-early-stage-breast-cancer-asco-guideline-update-q": {
+            "doc_id": "pi-cmrdy6i70016501o2z8g0vz3q",
+            "year": 2022,
+            "is_update": true
+        },
+        "al-sukhun-et-al-2024-systemic-treatment-of-patients-with-metastatic-breast-cancer-asco-resource-stratified-guideline-q (1)": {
+            "doc_id": "pi-cmrdy6ja7016601o2qdjmjilr",
+            "year": 2024,
+            "is_update": false
+        },
+        "burstein-et-al-2018-adjuvant-endocrine-therapy-for-women-with-hormone-receptor-positive-breast-cancer-asco-clinical": {
+            "doc_id": "pi-cmrdy6kmu016701o2vzczj0sl",
+            "year": 2018,
+            "is_update": true
+        },
+        "clark-et-al-2022-biomarkers-for-systemic-therapy-in-metastatic-breast-cancer-asco-guideline-update-q-and-a": {
+            "doc_id": "pi-cmrdy6lkt016801o26lmeellq",
+            "year": 2022,
+            "is_update": true
+        },
+        "brackstone-et-al-2021-management-of-the-axilla-in-early-stage-breast-cancer-ontario-health-(cancer-care-ontario)-and": {
+            "doc_id": "pi-cmrdy6mo5016901o2u4ak2ujy",
+            "year": 2021,
+            "is_update": false
+        },
+        "crews-et-al-2022-systemic-therapy-for-advanced-human-epidermal-growth-factor-receptor-2-positive-breast-cancer-asco": {
+            "doc_id": "pi-cmrdy6nyl016a01o2gzbxdyrs",
+            "year": 2022,
+            "is_update": true
+        },
+        "freedman-et-al-2022-adjuvant-abemaciclib-plus-endocrine-therapy-in-the-treatment-of-high-risk-early-breast-cancer-asco": {
+            "doc_id": "pi-cmrdy6oy3016b01o2c9h9ees1",
+            "year": 2022,
+            "is_update": true
+        },
+        "wolff-et-al-2023-human-epidermal-growth-factor-receptor-2-testing-in-breast-cancer-asco-college-of-american": {
+            "doc_id": "pi-cmrdy6q4r016c01o2e59g2r24",
+            "year": 2023,
+            "is_update": true
+        },
+        "park-et-al-2025-sentinel-lymph-node-biopsy-in-early-stage-breast-cancer-asco-guideline-update": {
+            "doc_id": "pi-cmrdy6rfh016d01o287twdo0q",
+            "year": 2025,
+            "is_update": true
+        },
+        "giordano-et-al-2021-abemaciclib-with-endocrine-therapy-in-the-treatment-of-high-risk-early-breast-cancer-asco-optimal": {
+            "doc_id": "pi-cmrdy6sfx016e01o2cj0ghvoe",
+            "year": 2021,
+            "is_update": true
+        },
+        "giordano-et-al-2022-systemic-therapy-for-advanced-human-epidermal-growth-factor-receptor-2-positive-breast-cancer-asco": {
+            "doc_id": "pi-cmrdy6tip016f01o2tp877sby",
+            "year": 2022,
+            "is_update": true
+        },
+        "recht-et-al-2016-postmastectomy-radiotherapy-an-american-society-of-clinical-oncology-american-society-for-radiation": {
+            "doc_id": "pi-cmrdy6us6016g01o2mah9s082",
+            "year": 2016,
+            "is_update": true
+        },
+        "hassett-et-al-2020-management-of-male-breast-cancer-asco-guideline": {
+            "doc_id": "pi-cmrf7djg8000u01phyrx75ssl",
+            "year": 2020,
+            "is_update": false
+        },
+        "ramakrishna-et-al-2022-management-of-advanced-human-epidermal-growth-factor-receptor-2-positive-breast-cancer-and-brain (1)": {
+            "doc_id": "pi-cmrf7dkvq000v01phka8cr4ho",
+            "year": 2022,
+            "is_update": true
+        },
+        "bedrosian-et-al-2024-germline-testing-in-patients-with-breast-cancer-asco-society-of-surgical-oncology-guideline": {
+            "doc_id": "pi-cmrf7dm5k000w01ph1fcvkxqv",
+            "year": 2024,
+            "is_update": false
+        },
+        "tung-et-al-2021-adjuvant-parp-inhibitors-in-patients-with-high-risk-early-stage-her2-negative-breast-cancer-and": {
+            "doc_id": "pi-cmrf7dnb4000x01ph2jn6y3w6",
+            "year": 2021,
+            "is_update": true
+        },
+        "andre-et-al-2019-use-of-biomarkers-to-guide-decisions-on-adjuvant-systemic-therapy-for-women-with-early-stage-invasive": {
+            "doc_id": "pi-cmrf7dojk000y01pha3srxz1e",
+            "year": 2019,
+            "is_update": true
+        },
+        "eisen-et-al-2022-use-of-adjuvant-bisphosphonates-and-other-bone-modifying-agents-in-breast-cancer-asco-oh-(cco)": {
+            "doc_id": "pi-cmrf7dppx000z01phd6wmrq89",
+            "year": 2022,
+            "is_update": true
+        },
+        "moy-et-al-2021-chemotherapy-and-targeted-therapy-for-patients-with-human-epidermal-growth-factor-receptor-2-negative": {
+            "doc_id": "pi-cmrf7dqul001001phplw799lp",
+            "year": 2021,
+            "is_update": true
+        },
+        "tung-et-al-2020-management-of-hereditary-breast-cancer-american-society-of-clinical-oncology-american-society-for": {
+            "doc_id": "pi-cmrf7ds4i001101ph9k2ugn80",
+            "year": 2020,
+            "is_update": false
+        },
+        "burstein-et-al-2024-endocrine-and-targeted-therapy-for-hormone-receptor-positive-human-epidermal-growth-factor-receptor": {
+            "doc_id": "pi-cmrf7dtff001201phk45nlgw8",
+            "year": 2024,
+            "is_update": true
+        },
+        "freedman-et-al-2024-optimal-adjuvant-chemotherapy-and-targeted-therapy-for-early-breast-cancer-cyclin-dependent-kinase": {
+            "doc_id": "pi-cmrf7dujn001301ph08rgclg3",
+            "year": 2024,
+            "is_update": true
+        },
+        "al-sukhun-et-al-2024-systemic-treatment-of-patients-with-metastatic-breast-cancer-asco-resource-stratified-guideline-q": {
+            "doc_id": "pi-cmrf7dvp0001401phht2jooms",
+            "year": 2024,
+            "is_update": false
+        },
+        "ramakrishna-et-al-2022-management-of-advanced-human-epidermal-growth-factor-receptor-2-positive-breast-cancer-and-brain": {
+            "doc_id": "pi-cmrf7dwta001501phth7zceg2",
+            "year": 2022,
+            "is_update": true
+        },
+        "vikas-et-al-2022-use-of-immune-checkpoint-inhibitors-in-the-treatment-of-high-risk-early-stage-triple-negative-breast": {
+            "doc_id": "pi-cmrf7dxso001601phrpq8pill",
+            "year": 2022,
+            "is_update": true
+        },
+        "visvanathan-et-al-2019-use-of-endocrine-therapy-for-breast-cancer-risk-reduction-asco-clinical-practice-guideline-update": {
+            "doc_id": "pi-cmrf7dz0e001701phrsyg4e9p",
+            "year": 2019,
+            "is_update": true
+        },
+        "hassett-et-al-2020-management-of-male-breast-cancer-asco-guideline-summary": {
+            "doc_id": "pi-cmrf7e0at001801phi8orblrd",
+            "year": 2020,
+            "is_update": false
+        },
+        "korde-et-al-2022-use-of-immune-checkpoint-inhibitor-pembrolizumab-in-the-treatment-of-high-risk-early-stage-triple": {
+            "doc_id": "pi-cmrf7e1f9001901phsfp08ozt",
+            "year": 2022,
+            "is_update": true
+        },
+        "al-sukhun-et-al-2024-systemic-treatment-of-patients-with-metastatic-breast-cancer-asco-resource-stratified-guideline": {
+            "doc_id": "pi-cmrf7e2n2001a01ph5c1oea6n",
+            "year": 2024,
+            "is_update": false
+        },
+        "henry-et-al-2022-biomarkers-for-systemic-therapy-in-metastatic-breast-cancer-asco-guideline-update": {
+            "doc_id": "pi-cmrf7e3ww001b01ph3y8dwv7k",
+            "year": 2022,
+            "is_update": true
+        },
+        "burstein-et-al-2023-testing-for-esr1-mutations-to-guide-therapy-for-hormone-receptor-positive-human-epidermal-growth": {
+            "doc_id": "pi-cmrf7e4x1001c01phwohu4mek",
+            "year": 2023,
+            "is_update": true
+        },
+        "burstein-et-al-2018-adjuvant-endocrine-therapy-for-women-with-hormone-receptor-positive-breast-cancer-asco-clinical (1)": {
+            "doc_id": "pi-cmrf7e66v001d01phna1asq23",
+            "year": 2018,
+            "is_update": true
+        },
+        "korde-et-al-2021-neoadjuvant-chemotherapy-endocrine-therapy-and-targeted-therapy-for-breast-cancer-asco-guideline": {
+            "doc_id": "pi-cmrf7e7bo001e01phq0vdk9s9",
+            "year": 2021,
+            "is_update": false
+        },
+        "fabian-et-al-2019-use-of-endocrine-therapy-for-breast-cancer-risk-reduction-asco-clinical-practice-guideline-update": {
+            "doc_id": "pi-cmrf7e8sl001f01phnt5jo3r2",
+            "year": 2019,
+            "is_update": true
+        },
+        "jimenez-et-al-2025-postmastectomy-radiation-therapy-an-astro-asco-sso-clinical-practice-guideline": {
+            "doc_id": "pi-cmrf7eab1001g01pho7ngci76",
+            "year": 2025,
+            "is_update": false
+        },
+        "allison-et-al-2020-estrogen-and-progesterone-receptor-testing-in-breast-cancer-asco-cap-guideline-update": {
+            "doc_id": "pi-cmrf7ecwo001h01phmanirmux",
+            "year": 2020,
+            "is_update": true
+        },
+        "denduluri-et-al-2020-selection-of-optimal-adjuvant-chemotherapy-and-targeted-therapy-for-early-breast-cancer-asco": {
+            "doc_id": "pi-cmrf7edzh001i01ph18ol5pzw",
+            "year": 2020,
+            "is_update": true
+        },
+        "eggener-et-al-2020-molecular-biomarkers-in-localized-prostate-cancer-asco-guideline-summary": {
+            "doc_id": "pi-cmrf7ef7s001j01ph8xg4o6rb",
+            "year": 2020,
+            "is_update": false
+        },
+        "eggener-et-al-2019-molecular-biomarkers-in-localized-prostate-cancer-asco-guideline": {
+            "doc_id": "pi-cmrf7eglb001k01phxmbocolg",
+            "year": 2019,
+            "is_update": false
+        },
+        "virgo-et-al-2023-initial-management-of-noncastrate-advanced-recurrent-or-metastatic-prostate-cancer-asco-guideline": {
+            "doc_id": "pi-cmrf7ehvo001l01phg3g16f91",
+            "year": 2023,
+            "is_update": true
+        },
+        "virgo-et-al-2023-initial-management-of-noncastrate-advanced-recurrent-or-metastatic-prostate-cancer-asco-guideline (1)": {
+            "doc_id": "pi-cmrf7ej07001m01phv4gdxvqm",
+            "year": 2023,
+            "is_update": true
+        },
+        "trabulsi-et-al-2020-optimum-imaging-strategies-for-advanced-prostate-cancer-asco-guideline-summary": {
+            "doc_id": "pi-cmrf7ek9a001n01ph36iwdc4p",
+            "year": 2020,
+            "is_update": false
+        },
+        "giri-et-al-2025-germline-and-somatic-genomic-testing-for-metastatic-prostate-cancer-asco-guideline-clinical-insights": {
+            "doc_id": "pi-cmrf7elk2001o01phqme5e9s3",
+            "year": 2025,
+            "is_update": false
+        },
+        "garje-et-al-2025-systemic-therapy-in-patients-with-metastatic-castration-resistant-prostate-cancer-asco-guideline": {
+            "doc_id": "pi-cmrf7en8y001p01phwq06mtwb",
+            "year": 2025,
+            "is_update": false
+        },
+        "yu-et-al-2025-germline-and-somatic-genomic-testing-for-metastatic-prostate-cancer-asco-guideline": {
+            "doc_id": "pi-cmrf7eozu001q01phi36ljf9g",
+            "year": 2025,
+            "is_update": false
+        },
+        "trabulsi-et-al-2020-optimum-imaging-strategies-for-advanced-prostate-cancer-asco-guideline": {
+            "doc_id": "pi-cmrf7eqey001r01phqld09cw0",
+            "year": 2020,
+            "is_update": false
+        },
+        "taplin-et-al-2026-systemic-therapy-in-patients-with-metastatic-castration-resistant-prostate-cancer-asco-living": {
+            "doc_id": "pi-cmrf7errf001s01phcox4jad0",
+            "year": 2026,
+            "is_update": true
+        },
+        "singer-et-al-2023-management-of-metastatic-renal-clear-cell-cancer-asco-guideline-rapid-recommendation-update": {
+            "doc_id": "pi-cmrf7et77001t01ph62aa8wyb",
+            "year": 2023,
+            "is_update": true
+        },
+        "rathmell-et-al-2022-management-of-metastatic-clear-cell-renal-cell-carcinoma-asco-guideline": {
+            "doc_id": "pi-cmrf7euid001u01phxhcfhybr",
+            "year": 2022,
+            "is_update": false
+        },
+        "garje-et-al-2025-systemic-therapy-in-patients-with-metastatic-castration-resistant-prostate-cancer-asco-guideline-update": {
+            "doc_id": "pi-cmrf7ew1j001v01ph3187mnmn",
+            "year": 2025,
+            "is_update": true
+        },
+        "singer-et-al-2023-management-of-metastatic-clear-cell-renal-cell-carcinoma-asco-guideline-q-a": {
+            "doc_id": "pi-cmrf7exbg001w01ph46a7v4kz",
+            "year": 2023,
+            "is_update": false
+        }
+    }
+}

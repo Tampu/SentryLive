@@ -1,0 +1,1750 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SentryLive — Clinical Guidelines</title>
+  <style>
+    :root {
+      /* ── Clinical palette ──────────────────────────────── */
+      --navy:          #0B1929;   /* header & history rail */
+      --navy-hover:    #122236;   /* hover within dark rail */
+      --navy-active:   #1A3050;   /* active item bg in rail */
+      --blue:          #0066CC;   /* clinical blue — primary accent */
+      --blue-dark:     #0052A3;   /* pressed / hover-darkened blue */
+      --blue-light:    #E8F2FF;   /* blue tint for badges, hover */
+      --blue-pale:     #F0F7FF;   /* very subtle blue bg */
+      --page-bg:       #F4F7FB;   /* overall page background */
+      --panel:         #FFFFFF;   /* white panel surfaces */
+      --surface:       #F8FAFC;   /* slightly off-white cards */
+      --border:        #E1E8F0;   /* default border */
+      --border-mid:    #C5D3E0;   /* slightly stronger border */
+      --text-1:        #0D1E2E;   /* primary text */
+      --text-2:        #4A5E6E;   /* secondary text */
+      --text-3:        #8096A7;   /* muted / placeholder */
+      --text-inv:      #EEF3F8;   /* white-ish text on dark */
+      --text-inv2:     #7A9BBD;   /* muted text on dark */
+      --green:         #16A34A;
+      --green-bg:      #F0FDF4;
+      --green-border:  #BBF7D0;
+      --amber:         #D97706;
+      --amber-bg:      #FFFBEB;
+      --amber-border:  #FDE68A;
+      --red:           #DC2626;
+      --red-bg:        #FEF2F2;
+      --red-border:    #FECACA;
+      --radius:        10px;
+      --radius-sm:     6px;
+      --shadow-sm:     0 1px 3px rgba(0,15,40,.07), 0 1px 2px rgba(0,15,40,.04);
+      --shadow-md:     0 4px 14px rgba(0,15,40,.10), 0 2px 4px rgba(0,15,40,.05);
+      --shadow-lg:     0 14px 40px rgba(0,15,40,.16);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      font-size: 14.5px;
+      color: var(--text-1);
+      background: var(--page-bg);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* ═══════════════════════════════════════════════
+       HEADER
+    ═══════════════════════════════════════════════ */
+    header {
+      background: var(--navy);
+      height: 58px;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-shrink: 0;
+      gap: 10px;
+      z-index: 20;
+      box-shadow: 0 1px 0 rgba(255,255,255,.05), 0 2px 10px rgba(0,0,0,.3);
+    }
+
+    /* header-left/right share flex-grow equally so leftover space splits evenly on
+       each side of header-center, keeping it centered on the full header regardless
+       of how wide the left/right content is */
+    .header-left   { display: flex; align-items: center; gap: 8px; flex: 1 1 0; }
+    .header-center { display: flex; align-items: center; justify-content: center; flex: 0 1 auto; }
+    .header-right  { display: flex; align-items: center; justify-content: flex-end; gap: 10px; flex: 1 1 0; }
+
+    /* History toggle */
+    .history-toggle {
+      width: 32px; height: 32px;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-inv2);
+      transition: all .15s;
+      flex-shrink: 0;
+    }
+    .history-toggle:hover { background: var(--navy-hover); border-color: rgba(255,255,255,.22); color: var(--text-inv); }
+    .history-toggle svg { width: 16px; height: 16px; fill: currentColor; }
+
+    /* Logo */
+    .logo { display: flex; align-items: center; gap: 9px; }
+    .logo-icon {
+      width: 30px; height: 30px;
+      background: var(--blue);
+      border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 8px rgba(0,102,204,.45);
+      flex-shrink: 0;
+    }
+    .logo-icon svg { width: 16px; height: 16px; fill: white; }
+    .logo-text { display: flex; flex-direction: column; align-items: center; }
+    .logo-name { font-size: 15px; font-weight: 700; color: var(--text-inv); letter-spacing: -.2px; line-height: 1.2; }
+    .logo-sub  { font-size: 9px; color: var(--text-inv2); font-weight: 600; letter-spacing: .9px; text-transform: uppercase; }
+
+    /* Divider */
+    .h-divider { width: 1px; height: 18px; background: rgba(255,255,255,.1); flex-shrink: 0; }
+
+    /* New chat button */
+    .new-chat-btn {
+      padding: 5px 12px;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,.18);
+      color: var(--text-inv);
+      border-radius: var(--radius-sm);
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex; align-items: center; gap: 5px;
+      transition: all .15s;
+      white-space: nowrap;
+    }
+    .new-chat-btn:hover { background: var(--navy-hover); border-color: rgba(255,255,255,.3); }
+    .new-chat-btn svg { width: 12px; height: 12px; fill: currentColor; }
+
+    /* Role toggle */
+    .role-label { font-size: 12px; color: var(--text-inv2); font-weight: 500; white-space: nowrap; }
+    .role-toggle {
+      display: flex;
+      background: rgba(0,0,0,.25);
+      border-radius: var(--radius-sm);
+      padding: 3px;
+      gap: 2px;
+      border: 1px solid rgba(255,255,255,.1);
+    }
+    .role-btn {
+      padding: 4px 14px;
+      border: none;
+      background: transparent;
+      border-radius: 5px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .15s;
+      color: rgba(238,243,248,.55);
+    }
+    .role-btn.active {
+      background: var(--blue);
+      color: white;
+      box-shadow: 0 1px 5px rgba(0,102,204,.55);
+    }
+
+    /* ═══════════════════════════════════════════════
+       MAIN LAYOUT
+    ═══════════════════════════════════════════════ */
+    .main { display: flex; flex: 1; overflow: hidden; }
+
+    /* ═══════════════════════════════════════════════
+       HISTORY SIDEBAR  (continues the dark rail)
+    ═══════════════════════════════════════════════ */
+    .history-sidebar {
+      width: 220px;
+      min-width: 220px;
+      background: var(--navy);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      flex-shrink: 0;
+      transition: width .22s ease, min-width .22s ease;
+      border-right: 1px solid rgba(255,255,255,.06);
+    }
+    .history-sidebar.collapsed { width: 0; min-width: 0; }
+
+    .history-head {
+      padding: 13px 14px 9px;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      flex-shrink: 0;
+    }
+    .history-head-label {
+      font-size: 9.5px;
+      font-weight: 700;
+      color: rgba(122,155,189,.6);
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      white-space: nowrap;
+    }
+
+    .history-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 5px 6px 10px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .history-empty {
+      padding: 18px 12px 0;
+      font-size: 11.5px;
+      color: rgba(122,155,189,.5);
+      text-align: center;
+      line-height: 1.7;
+    }
+
+    .history-date-label {
+      font-size: 9px;
+      font-weight: 700;
+      color: rgba(122,155,189,.4);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 11px 8px 3px;
+      white-space: nowrap;
+    }
+
+    .history-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 8px 7px 12px;
+      border-radius: 7px;
+      cursor: pointer;
+      transition: background .12s;
+      min-width: 0;
+      position: relative;
+    }
+    .history-item:hover { background: var(--navy-hover); }
+    .history-item.active { background: var(--navy-active); }
+    .history-item.active::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 5px; bottom: 5px;
+      width: 3px;
+      background: var(--blue);
+      border-radius: 0 2px 2px 0;
+    }
+
+    .history-item-text {
+      flex: 1;
+      min-width: 0;
+      font-size: 12px;
+      color: rgba(238,243,248,.55);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 1.4;
+    }
+    .history-item.active .history-item-text { color: var(--text-inv); font-weight: 500; }
+
+    .history-delete-btn {
+      width: 18px; height: 18px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: var(--text-inv2);
+      border-radius: 3px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      flex-shrink: 0;
+      transition: all .1s;
+      opacity: .6;
+    }
+    .history-item:hover .history-delete-btn { display: flex; }
+    .history-delete-btn:hover { background: rgba(220,38,38,.2); color: #FCA5A5; opacity: 1; }
+
+    /* ═══════════════════════════════════════════════
+       EVIDENCE PANEL
+    ═══════════════════════════════════════════════ */
+    .evidence-panel {
+      width: 292px;
+      min-width: 260px;
+      background: var(--panel);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .evidence-header {
+      padding: 13px 16px 11px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+      background: var(--surface);
+    }
+    .evidence-header-row { display: flex; align-items: center; justify-content: space-between; }
+    .evidence-title {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text-2);
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+    }
+    .evidence-count {
+      font-size: 11px;
+      color: var(--text-3);
+      margin-top: 3px;
+    }
+
+    .evidence-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .evidence-empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      text-align: center;
+      padding: 24px 18px;
+      gap: 10px;
+    }
+    .evidence-empty-icon {
+      width: 40px; height: 40px;
+      background: var(--blue-light);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+    .evidence-empty p { font-size: 12px; color: var(--text-3); line-height: 1.7; }
+
+    .evidence-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--blue);
+      border-radius: var(--radius);
+      padding: 11px 13px;
+      cursor: pointer;
+      transition: all .15s;
+      box-shadow: var(--shadow-sm);
+    }
+    .evidence-card:hover {
+      border-color: var(--blue);
+      border-left-color: var(--blue);
+      background: var(--blue-pale);
+      box-shadow: var(--shadow-md);
+    }
+    .evidence-card.highlighted {
+      background: var(--blue-light);
+      border-color: var(--blue);
+      box-shadow: var(--shadow-md);
+    }
+
+    .evidence-card-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 2px; }
+    .evidence-author { font-size: 11.5px; font-weight: 700; color: var(--text-1); line-height: 1.35; }
+    .evidence-page {
+      font-size: 9.5px;
+      background: var(--blue-light);
+      color: var(--blue-dark);
+      padding: 2px 7px;
+      border-radius: 10px;
+      font-weight: 700;
+      white-space: nowrap;
+      flex-shrink: 0;
+      letter-spacing: .2px;
+    }
+    .evidence-topic { font-size: 10px; color: var(--text-3); margin-bottom: 6px; font-weight: 500; text-transform: uppercase; letter-spacing: .5px; }
+    .evidence-update-badge {
+      display: inline-block;
+      font-size: 9.5px;
+      background: var(--blue-light);
+      color: var(--blue-dark);
+      padding: 2px 7px;
+      border-radius: 10px;
+      font-weight: 700;
+      letter-spacing: .2px;
+      white-space: nowrap;
+      margin-bottom: 6px;
+    }
+    .evidence-text { font-size: 11.5px; color: var(--text-2); line-height: 1.65; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+    .evidence-pdf-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 9px;
+      font-size: 11px;
+      color: var(--blue);
+      font-weight: 600;
+      padding: 3px 8px 3px 0;
+      border: none;
+      background: none;
+      cursor: pointer;
+      transition: color .1s;
+      border-radius: 4px;
+    }
+    .evidence-pdf-btn:hover { color: var(--blue-dark); text-decoration: underline; }
+
+    /* ═══════════════════════════════════════════════
+       CHAT AREA
+    ═══════════════════════════════════════════════ */
+    .chat-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: var(--page-bg);
+    }
+
+    /* ═══════════════════════════════════════════════
+       WELCOME SCREEN
+    ═══════════════════════════════════════════════ */
+    .welcome-screen {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 28px 24px 32px;
+      gap: 22px;
+      overflow-y: auto;
+    }
+    .welcome-screen.hidden { display: none; }
+
+    .welcome-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--blue);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .welcome-eyebrow-dot {
+      width: 6px; height: 6px;
+      background: var(--blue);
+      border-radius: 50%;
+    }
+
+    .welcome-heading { text-align: center; }
+    .welcome-heading h2 {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-1);
+      letter-spacing: -.4px;
+      margin-bottom: 8px;
+      line-height: 1.25;
+    }
+    .welcome-heading p {
+      font-size: 14px;
+      color: var(--text-2);
+      max-width: 430px;
+      line-height: 1.7;
+      margin: 0 auto;
+    }
+
+    .welcome-tabs { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
+    .welcome-tab {
+      padding: 6px 15px;
+      border: 1.5px solid var(--border-mid);
+      border-radius: 20px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text-2);
+      cursor: pointer;
+      background: var(--panel);
+      transition: all .15s;
+      box-shadow: var(--shadow-sm);
+    }
+    .welcome-tab:hover { border-color: var(--blue); color: var(--blue); background: var(--blue-pale); }
+    .welcome-tab.active { background: var(--blue); border-color: var(--blue); color: white; box-shadow: 0 2px 10px rgba(0,102,204,.3); }
+
+    .welcome-questions { width: 100%; max-width: 520px; display: flex; flex-direction: column; gap: 5px; }
+    .welcome-q {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 14px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 13px;
+      color: var(--text-2);
+      cursor: pointer;
+      transition: all .15s;
+      text-align: left;
+      line-height: 1.55;
+      box-shadow: var(--shadow-sm);
+    }
+    .welcome-q:hover { background: var(--blue-pale); border-color: var(--blue); color: var(--text-1); box-shadow: var(--shadow-md); }
+    .welcome-q-text { flex: 1; }
+    .welcome-q-chevron { color: var(--text-3); font-size: 16px; flex-shrink: 0; transition: color .15s, transform .15s; }
+    .welcome-q:hover .welcome-q-chevron { color: var(--blue); transform: translateX(2px); }
+
+    .welcome-stats {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 11.5px;
+      color: var(--text-3);
+      padding-top: 2px;
+    }
+    .welcome-stats-item { display: flex; align-items: center; gap: 5px; }
+    .welcome-stats-dot { width: 4px; height: 4px; background: var(--border-mid); border-radius: 50%; }
+
+    /* ═══════════════════════════════════════════════
+       MESSAGES
+    ═══════════════════════════════════════════════ */
+    .messages { flex: 1; overflow-y: auto; padding: 22px 24px; display: flex; flex-direction: column; gap: 18px; }
+    .messages.hidden { display: none; }
+
+    .message-row { display: flex; gap: 10px; }
+    .message-row.user { justify-content: flex-end; align-self: flex-end; max-width: 65%; }
+    .message-row.bot  { justify-content: flex-start; align-self: flex-start; max-width: 88%; }
+
+    .bot-avatar {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: var(--blue);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      margin-top: 3px;
+      box-shadow: 0 2px 6px rgba(0,102,204,.28);
+    }
+    .bot-avatar svg { width: 13px; height: 13px; fill: white; }
+
+    .message-bubble { padding: 11px 15px; border-radius: var(--radius); line-height: 1.75; font-size: 14px; }
+
+    .message-row.user .message-bubble {
+      background: var(--blue);
+      color: white;
+      border-bottom-right-radius: 3px;
+      box-shadow: 0 2px 8px rgba(0,102,204,.22);
+    }
+    .message-row.bot .message-content { display: flex; flex-direction: column; gap: 6px; flex: 1; min-width: 0; }
+    .message-row.bot .message-bubble {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-bottom-left-radius: 3px;
+      color: var(--text-1);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .message-bubble p            { margin: 0 0 8px; }
+    .message-bubble p:last-child { margin-bottom: 0; }
+    .message-bubble ul,
+    .message-bubble ol           { margin: 4px 0 8px 20px; }
+    .message-bubble li           { margin: 4px 0; }
+    .message-bubble h4           { font-size: 13.5px; font-weight: 700; color: var(--blue); margin: 10px 0 4px; }
+    .message-bubble br           { display: block; content: ''; margin-top: 4px; }
+
+    .citation {
+      display: inline-block;
+      font-size: 10.5px;
+      background: var(--blue-light);
+      color: var(--blue-dark);
+      padding: 1px 6px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: all .12s;
+      margin: 0 1px;
+      vertical-align: baseline;
+      border: 1px solid #C8DFF8;
+    }
+    .citation:hover { background: var(--blue); color: white; border-color: transparent; }
+
+    /* Citation to a document not found in the uploaded guideline corpus (see
+       pipeline/utils/citation_formatter.py known_filenames check) — deliberately
+       NOT clickable like .citation, since there's no evidence card behind it */
+    .citation-unverified {
+      display: inline-block;
+      font-size: 10.5px;
+      background: var(--red-bg);
+      color: var(--red);
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-weight: 700;
+      margin: 0 1px;
+      vertical-align: baseline;
+      border: 1px solid var(--red-border);
+    }
+
+    .drift-note {
+      font-size: 12.5px;
+      color: var(--amber);
+      background: var(--amber-bg);
+      border: 1px solid var(--amber-border);
+      border-left: 3px solid var(--amber);
+      padding: 7px 12px;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      margin: 5px 0 2px;
+      line-height: 1.55;
+    }
+
+    .message-footer { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 10.5px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 20px;
+      border: 1px solid;
+      /* badges are <button>s so the report panel can be toggled — reset native button chrome */
+      font-family: inherit;
+      cursor: pointer;
+      transition: filter .12s;
+    }
+    .badge:hover  { filter: brightness(0.96); }
+    .badge.active { filter: brightness(0.92); box-shadow: inset 0 0 0 1px currentColor; }
+    .badge.verified   { background: var(--green-bg);  color: var(--green);  border-color: var(--green-border); }
+    .badge.partial    { background: var(--amber-bg);  color: var(--amber);  border-color: var(--amber-border); }
+    .badge.unverified { background: var(--red-bg);    color: var(--red);    border-color: var(--red-border);   }
+    .badge.outdated   { background: var(--amber-bg);  color: var(--amber);  border-color: var(--amber-border); }
+
+    /* Expandable verification/temporal report panel */
+    .verification-panel {
+      display: none;
+      margin-top: 4px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--surface);
+      overflow: hidden;
+      width: 100%;
+    }
+    .verification-panel.open { display: block; }
+    .verification-report-section { display: none; padding: 10px 12px; }
+    .verification-report-title {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: var(--text-3);
+      margin-bottom: 4px;
+    }
+    .verification-report-body {
+      font-size: 12.5px;
+      color: var(--text-2);
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+
+    /* Clinician feedback */
+    .feedback-toggle {
+      font-size: 11.5px;
+      color: var(--text-3);
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: color .1s;
+    }
+    .feedback-toggle:hover { color: var(--blue); }
+    .feedback-form { display: none; margin-top: 7px; }
+    .feedback-form.open { display: block; }
+    .feedback-textarea {
+      width: 100%;
+      min-height: 54px;
+      padding: 8px 12px;
+      border: 1px solid var(--border-mid);
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-family: inherit;
+      color: var(--text-1);
+      background: var(--surface);
+      resize: vertical;
+    }
+    .feedback-textarea:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(0,102,204,.11); }
+    .feedback-submit { margin-top: 5px; padding: 5px 14px; background: var(--blue); color: white; border: none; border-radius: var(--radius-sm); font-size: 12px; font-weight: 600; cursor: pointer; transition: background .1s; }
+    .feedback-submit:hover { background: var(--blue-dark); }
+
+    /* Cache actions */
+    .cache-actions { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-top: 5px; }
+    .cache-btn {
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-mid);
+      background: var(--panel);
+      color: var(--text-2);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all .12s;
+      box-shadow: var(--shadow-sm);
+    }
+    .cache-btn:hover { background: var(--blue); color: white; border-color: var(--blue); box-shadow: 0 2px 6px rgba(0,102,204,.2); }
+    .cache-btn.rerun { color: var(--text-3); }
+    .cache-btn.rerun:hover { background: var(--surface); color: var(--text-2); border-color: var(--border-mid); box-shadow: none; }
+
+    .review-panel { display: none; margin-top: 8px; }
+    .review-panel.open { display: block; }
+    .review-panel label { font-size: 11.5px; font-weight: 600; color: var(--text-2); display: block; margin-bottom: 4px; }
+    .review-textarea { width: 100%; min-height: 110px; padding: 8px 12px; border: 1.5px solid var(--blue); border-radius: var(--radius-sm); font-size: 13px; font-family: inherit; color: var(--text-1); background: var(--blue-pale); resize: vertical; }
+    .review-textarea:focus { outline: none; box-shadow: 0 0 0 3px rgba(0,102,204,.11); }
+    .review-actions { display: flex; gap: 6px; margin-top: 5px; }
+    .review-save-btn { padding: 5px 14px; background: var(--blue); color: white; border: none; border-radius: var(--radius-sm); font-size: 12px; font-weight: 600; cursor: pointer; }
+    .review-save-btn:hover { background: var(--blue-dark); }
+    .review-cancel-btn { padding: 5px 12px; background: transparent; border: 1px solid var(--border-mid); border-radius: var(--radius-sm); font-size: 12px; color: var(--text-2); cursor: pointer; }
+
+    .cache-hit-note {
+      font-size: 11.5px;
+      color: var(--blue-dark);
+      background: var(--blue-light);
+      border: 1px solid #C8DFF8;
+      border-radius: var(--radius-sm);
+      padding: 3px 9px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-weight: 500;
+    }
+
+    /* Typing indicator */
+    .typing-indicator {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 11px 15px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      border-bottom-left-radius: 3px;
+      width: fit-content;
+      box-shadow: var(--shadow-sm);
+    }
+    .typing-dot { width: 6px; height: 6px; background: var(--border-mid); border-radius: 50%; animation: bounce 1.2s infinite ease-in-out; }
+    .typing-dot:nth-child(2) { animation-delay: .2s; }
+    .typing-dot:nth-child(3) { animation-delay: .4s; }
+    @keyframes bounce {
+      0%, 80%, 100% { transform: translateY(0);   background: var(--border-mid); }
+      40%            { transform: translateY(-5px); background: var(--blue); }
+    }
+    .typing-status { font-size: 11.5px; font-weight: 600; color: var(--text-3); letter-spacing: .2px; }
+
+    /* ═══════════════════════════════════════════════
+       INPUT BAR
+    ═══════════════════════════════════════════════ */
+    .input-area {
+      border-top: 1px solid var(--border);
+      padding: 11px 22px 14px;
+      background: var(--panel);
+      flex-shrink: 0;
+      box-shadow: 0 -1px 0 var(--border), 0 -4px 12px rgba(0,15,40,.04);
+    }
+    .input-form { display: flex; gap: 8px; align-items: flex-end; max-width: 720px; margin: 0 auto; }
+    .input-field {
+      flex: 1;
+      padding: 10px 15px;
+      border: 1.5px solid var(--border-mid);
+      border-radius: var(--radius);
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--text-1);
+      background: var(--panel);
+      resize: none;
+      max-height: 160px;
+      overflow-y: auto;
+      transition: border-color .15s, box-shadow .15s;
+      line-height: 1.5;
+    }
+    .input-field:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(0,102,204,.11); }
+    .input-field::placeholder { color: var(--text-3); }
+
+    .send-btn {
+      width: 40px; height: 40px;
+      background: var(--blue);
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: background .15s, box-shadow .15s;
+      box-shadow: 0 2px 6px rgba(0,102,204,.3);
+    }
+    .send-btn:hover:not(:disabled) { background: var(--blue-dark); box-shadow: 0 3px 10px rgba(0,102,204,.4); }
+    .send-btn:disabled { background: var(--border-mid); box-shadow: none; cursor: not-allowed; }
+    .send-btn svg { width: 16px; height: 16px; fill: white; }
+
+    /* ═══════════════════════════════════════════════
+       PDF MODAL
+    ═══════════════════════════════════════════════ */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(8,16,30,.7);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: var(--panel);
+      border-radius: 14px;
+      width: 90vw;
+      max-width: 920px;
+      height: 87vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border);
+    }
+    .modal-header {
+      padding: 12px 18px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+      background: var(--surface);
+    }
+    .modal-title { font-size: 13px; font-weight: 700; color: var(--text-1); }
+    .modal-close {
+      width: 27px; height: 27px;
+      border: 1px solid var(--border);
+      background: var(--panel);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-size: 14px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--text-2);
+      transition: all .1s;
+      line-height: 1;
+    }
+    .modal-close:hover { background: var(--red-bg); border-color: var(--red-border); color: var(--red); }
+    .pdf-iframe { flex: 1; border: none; width: 100%; }
+
+    /* ═══════════════════════════════════════════════
+       SCROLLBARS
+    ═══════════════════════════════════════════════ */
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border-mid); border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--text-3); }
+    .history-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,.12); }
+    .history-list::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,.22); }
+  </style>
+</head>
+<body>
+
+<!-- ═══ HEADER ══════════════════════════════════════ -->
+<header>
+  <div class="header-left">
+    <button class="history-toggle" onclick="toggleHistorySidebar()" title="Toggle history">
+      <svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+    </button>
+
+    <div class="h-divider"></div>
+
+    <button class="new-chat-btn" onclick="newChat()">
+      <svg viewBox="0 0 24 24"><path d="M19 13H13v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+      New Chat
+    </button>
+  </div>
+
+  <div class="header-center">
+    <div class="logo">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 21.593c-5.63-5.539-11-10.297-11-14.402
+                   0-3.791 3.068-5.191 5.281-5.191
+                   1.312 0 4.151.501 5.719 4.457
+                   1.59-3.968 4.464-4.447 5.726-4.447
+                   2.54 0 5.274 1.621 5.274 5.181
+                   0 4.069-5.136 8.625-11 14.402z"/>
+        </svg>
+      </div>
+      <div class="logo-text">
+        <span class="logo-name">SentryLive</span>
+        <span class="logo-sub">Mayo Clinic · Oncology Guidelines</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="header-right">
+    <span class="role-label"></span>
+    <div class="role-toggle">
+      <button class="role-btn" id="btn-clinician" onclick="setRole('clinician')">Doctor</button>
+      <button class="role-btn active" id="btn-patient" onclick="setRole('patient')">Patient</button>
+    </div>
+  </div>
+</header>
+
+<!-- ═══ MAIN ══════════════════════════════════════════ -->
+<div class="main">
+
+  <!-- History sidebar -->
+  <aside class="history-sidebar" id="history-sidebar">
+    <div class="history-head">
+      <div class="history-head-label">Conversations</div>
+    </div>
+    <div class="history-list" id="history-list">
+      <div class="history-empty">No saved conversations yet.</div>
+    </div>
+  </aside>
+
+  <!-- Evidence panel -->
+  <aside class="evidence-panel">
+    <div class="evidence-header">
+      <div class="evidence-header-row">
+        <div class="evidence-title">Evidence Sources</div>
+      </div>
+      <div class="evidence-count" id="evidence-count">Ask a question to see sources</div>
+    </div>
+    <div class="evidence-list" id="evidence-list">
+      <div class="evidence-empty">
+        <div class="evidence-empty-icon">📄</div>
+        <p>Guideline passages cited in the conversation will appear here.</p>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Chat -->
+  <div class="chat-area">
+
+    <!-- Welcome screen -->
+    <div class="welcome-screen" id="welcome-screen">
+      <div class="welcome-eyebrow">
+        <div class="welcome-eyebrow-dot"></div>
+        Clinical Decision Support
+        <div class="welcome-eyebrow-dot"></div>
+      </div>
+
+      <div class="welcome-heading">
+        <h2>What would you like to know?</h2>
+        <p>Ask any question about cancer diagnosis, treatment, or follow-up. Every answer is grounded in latest ASCO guidelines.</p>
+      </div>
+
+      <div class="welcome-tabs" id="welcome-tabs"></div>
+      <div class="welcome-questions" id="welcome-questions"></div>
+
+      <div class="welcome-stats">
+        <div class="welcome-stats-item">ASCO guidelines</div>
+        <div class="welcome-stats-dot"></div>
+        <div class="welcome-stats-item">Oncology focus</div>
+        <div class="welcome-stats-dot"></div>
+        <div class="welcome-stats-item">Gemini retrieval</div>
+      </div>
+    </div>
+
+    <!-- Message thread -->
+    <div class="messages hidden" id="messages"></div>
+
+    <!-- Input -->
+    <div class="input-area">
+      <form class="input-form" onsubmit="return false">
+        <textarea
+          id="input-field"
+          class="input-field"
+          rows="1"
+          placeholder="Ask a clinical guideline question…"
+          onkeydown="handleKeydown(event)"
+          oninput="autoResize(this)"
+        ></textarea>
+        <button class="send-btn" id="send-btn" onclick="sendMessage()" title="Send (Enter)">
+          <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+        </button>
+      </form>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ PDF MODAL ══════════════════════════════════════ -->
+<div class="modal-overlay" id="pdf-modal" onclick="closePdfModal(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="modal-title">Guideline Source</span>
+      <button class="modal-close" onclick="closePdfModal(null)">✕</button>
+    </div>
+    <iframe id="pdf-iframe" class="pdf-iframe" src="about:blank"></iframe>
+  </div>
+</div>
+
+<script>
+/* ─── Suggested questions ────────────────────────────── */
+const WELCOME_CATEGORIES = [
+  {
+    label: 'Biomarkers & Testing',
+    questions: [
+      'What Oncotype DX recurrence score threshold triggers chemoendocrine therapy in postmenopausal patients with 1–3 positive nodes?',
+      'How does the 2023 ASCO-CAP guideline reclassify HER2 IHC 1+ results compared to the 2018 update?',
+      'What ESR1 mutation testing is recommended after aromatase inhibitor resistance in metastatic breast cancer?',
+      'When is BRCA1/2 germline testing recommended in early-stage breast cancer?',
+    ],
+  },
+  {
+    label: 'Systemic Therapy',
+    questions: [
+      'What CDK4/6 inhibitor is recommended as first-line therapy for HR+/HER2− metastatic breast cancer?',
+      'What systemic therapy is recommended for HER2-positive MBC that recurred within 12 months of trastuzumab?',
+      'What is the role of abemaciclib in high-risk early HR+ breast cancer after surgery?',
+      'When is pertuzumab added to trastuzumab-based neoadjuvant therapy for HER2+ breast cancer?',
+    ],
+  },
+  {
+    label: 'Surgery & Radiation',
+    questions: [
+      'When should sentinel lymph node biopsy be omitted in patients ≥50 years with T1–T2 HR+ tumors?',
+      'What are the indications for postmastectomy radiation therapy after neoadjuvant chemotherapy?',
+      'Is axillary dissection required when sentinel lymph nodes are positive in patients receiving whole-breast irradiation?',
+      'What radiation technique reduces cardiac dose in left-sided breast cancer?',
+    ],
+  },
+  {
+    label: 'Genetics & Special Populations',
+    questions: [
+      'What are the BRCA1/2 testing criteria for patients with triple-negative breast cancer?',
+      'How should BRCA-mutated HER2-negative metastatic breast cancer be treated after chemotherapy?',
+      'What resource-stratified recommendations exist for metastatic breast cancer in low- and middle-income countries?',
+      'What endocrine therapy is recommended for premenopausal women with high-risk early HR+ breast cancer?',
+    ],
+  },
+];
+
+/* ─── State ─────────────────────────────────────────── */
+let currentRole        = 'patient';
+let sessionId          = null;
+let lastAnswer         = '';
+let isLoading          = false;
+let msgCounter         = 0;
+let evidenceMap        = new Map();
+let historySidebarOpen = true;
+let activeConvId       = null;
+let typingTimers       = new Map();
+let activeCategoryIdx  = 0;
+
+/* ─── Init ───────────────────────────────────────────── */
+window.addEventListener('DOMContentLoaded', () => {
+  renderWelcomeCategories();
+  loadHistoryList();
+});
+
+/* ─── Welcome screen ─────────────────────────────────── */
+function renderWelcomeCategories() {
+  const tabsEl = document.getElementById('welcome-tabs');
+  const qsEl   = document.getElementById('welcome-questions');
+
+  tabsEl.innerHTML = WELCOME_CATEGORIES.map((cat, i) =>
+    `<button class="welcome-tab${i === activeCategoryIdx ? ' active' : ''}"
+             onclick="selectCategory(${i})">${escHtml(cat.label)}</button>`
+  ).join('');
+
+  const cat = WELCOME_CATEGORIES[activeCategoryIdx];
+  qsEl.innerHTML = cat.questions.map((q, qi) =>
+    // Reference the question by index rather than re-embedding its text into the
+    // attribute — any quote/apostrophe in the text would otherwise terminate the
+    // onclick="..." attribute early and corrupt the button's HTML.
+    `<button class="welcome-q" onclick="askQuestion(WELCOME_CATEGORIES[${activeCategoryIdx}].questions[${qi}])">
+       <span class="welcome-q-text">${escHtml(q)}</span>
+       <span class="welcome-q-chevron">›</span>
+     </button>`
+  ).join('');
+}
+
+function selectCategory(idx) {
+  activeCategoryIdx = idx;
+  renderWelcomeCategories();
+}
+
+function askQuestion(q) {
+  const field = document.getElementById('input-field');
+  field.value = q;
+  autoResize(field);
+  sendMessage();
+}
+
+function showWelcome() {
+  document.getElementById('welcome-screen').classList.remove('hidden');
+  document.getElementById('messages').classList.add('hidden');
+}
+
+function hideWelcome() {
+  document.getElementById('welcome-screen').classList.add('hidden');
+  document.getElementById('messages').classList.remove('hidden');
+}
+
+/* ─── History sidebar ────────────────────────────────── */
+function toggleHistorySidebar() {
+  historySidebarOpen = !historySidebarOpen;
+  document.getElementById('history-sidebar').classList.toggle('collapsed', !historySidebarOpen);
+}
+
+async function loadHistoryList() {
+  try {
+    const resp = await fetch('/api/conversations');
+    if (!resp.ok) return;
+    const data = await resp.json();
+    renderHistoryList(data.conversations || []);
+  } catch (_) {}
+}
+
+function renderHistoryList(conversations) {
+  const list = document.getElementById('history-list');
+  if (!conversations.length) {
+    list.innerHTML = '<div class="history-empty">No saved conversations yet.</div>';
+    return;
+  }
+
+  const groups = {};
+  for (const conv of conversations) {
+    const label = dateLabel(conv.updated_at);
+    if (!groups[label]) groups[label] = [];
+    groups[label].push(conv);
+  }
+
+  let html = '';
+  for (const [label, items] of Object.entries(groups)) {
+    html += `<div class="history-date-label">${escHtml(label)}</div>`;
+    for (const conv of items) {
+      const isActive = conv.id === activeConvId;
+      html += `
+        <div class="history-item${isActive ? ' active' : ''}"
+             onclick="loadConversation('${escHtml(conv.id)}')"
+             id="hitem-${escHtml(conv.id)}">
+          <div class="history-item-text" title="${escHtml(conv.title)}">${escHtml(conv.title || 'Untitled')}</div>
+          <button class="history-delete-btn"
+                  onclick="deleteConversation(event,'${escHtml(conv.id)}')"
+                  title="Delete">✕</button>
+        </div>`;
+    }
+  }
+  list.innerHTML = html;
+}
+
+function dateLabel(iso) {
+  if (!iso) return 'Earlier';
+  const d = new Date(iso), now = new Date();
+  const diff = Math.floor((now - d) / 86400000);
+  if (diff === 0) return 'Today';
+  if (diff === 1) return 'Yesterday';
+  if (diff < 7)  return 'This week';
+  return d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+}
+
+async function loadConversation(convId) {
+  try {
+    const resp = await fetch(`/api/conversations/${convId}`);
+    if (!resp.ok) return;
+    const conv = await resp.json();
+
+    sessionId    = conv.id;
+    activeConvId = conv.id;
+    evidenceMap  = new Map();
+    msgCounter   = 0;
+
+    const role = conv.role || 'patient';
+    currentRole = role;
+    document.getElementById('btn-clinician').classList.toggle('active', role === 'clinician');
+    document.getElementById('btn-patient').classList.toggle('active', role === 'patient');
+
+    document.getElementById('messages').innerHTML = '';
+    hideWelcome();
+
+    for (const msg of conv.messages || []) {
+      addUserMessage(msg.query);
+      addBotMessage(msg.answer, msg.evidence || [], msg.verification,
+                    msg.temporal_verification, msg.query, msg.cache_hit || false, null);
+    }
+
+    for (const ev of conv.all_evidence || []) {
+      const key = `${ev.filename}|${ev.page}`;
+      if (!evidenceMap.has(key)) evidenceMap.set(key, ev);
+    }
+    renderEvidence();
+
+    document.querySelectorAll('.history-item').forEach(el => {
+      el.classList.toggle('active', el.id === `hitem-${convId}`);
+    });
+  } catch (_) {}
+}
+
+async function deleteConversation(event, convId) {
+  event.stopPropagation();
+  try {
+    await fetch(`/api/conversations/${convId}`, { method: 'DELETE' });
+    if (convId === activeConvId) newChat();
+    loadHistoryList();
+  } catch (_) {}
+}
+
+/* ─── New chat ───────────────────────────────────────── */
+function newChat() {
+  sessionId    = null;
+  activeConvId = null;
+  evidenceMap  = new Map();
+  msgCounter   = 0;
+  lastAnswer   = '';
+  document.getElementById('messages').innerHTML = '';
+  clearEvidence();
+  showWelcome();
+  document.querySelectorAll('.history-item').forEach(el => el.classList.remove('active'));
+}
+
+/* ─── Role selection ─────────────────────────────────── */
+function setRole(role) {
+  if (role === currentRole) return;
+  currentRole = role;
+  document.getElementById('btn-clinician').classList.toggle('active', role === 'clinician');
+  document.getElementById('btn-patient').classList.toggle('active', role === 'patient');
+  newChat();
+}
+
+/* ─── Send message ───────────────────────────────────── */
+async function sendMessage() {
+  const field = document.getElementById('input-field');
+  const query = field.value.trim();
+  if (!query || isLoading) return;
+
+  field.value = '';
+  field.style.height = '';
+  isLoading = true;
+  document.getElementById('send-btn').disabled = true;
+
+  hideWelcome();
+  addUserMessage(query);
+  const typingId = addTypingIndicator();
+
+  try {
+    const resp = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ session_id: sessionId, query, role: currentRole }),
+    });
+    const data = await resp.json();
+
+    if (!resp.ok) {
+      const msg = data.detail || ('Server error ' + resp.status);
+      console.error('Pipeline error:\n', data.traceback || msg);
+      removeTypingIndicator(typingId);
+      addBotMessage(`⚠ Error: ${msg}`, [], null, null, null, false, null);
+      return;
+    }
+
+    sessionId    = data.session_id;
+    activeConvId = data.session_id;
+    lastAnswer   = data.answer;
+
+    evidenceMap = new Map();
+    for (const ev of data.all_evidence || []) {
+      evidenceMap.set(`${ev.filename}|${ev.page}`, ev);
+    }
+
+    removeTypingIndicator(typingId);
+    renderEvidence();
+    addBotMessage(data.answer, data.evidence || [], data.verification,
+                  data.temporal_verification, query, data.cache_hit || false, data.cached_query || null);
+    loadHistoryList();
+
+  } catch (err) {
+    removeTypingIndicator(typingId);
+    addBotMessage(`⚠ Error: ${err.message}`, [], null, null, null, false, null);
+    console.error(err);
+  } finally {
+    isLoading = false;
+    document.getElementById('send-btn').disabled = false;
+  }
+}
+
+/* ─── Message rendering ──────────────────────────────── */
+function addUserMessage(text) {
+  const row = el('div', 'message-row user');
+  row.innerHTML = `<div class="message-bubble">${escHtml(text)}</div>`;
+  appendMessage(row);
+}
+
+function addBotMessage(text, evidence, verification, temporal, query, cacheHit, cachedQuery) {
+  const id  = 'msg-' + (++msgCounter);
+  const row = el('div', 'message-row bot');
+  row.id    = id;
+
+  const badges       = buildBadges(verification, temporal, id);
+  const reportPanel  = buildVerificationPanel(id, verification, temporal);
+  const feedbackHtml = (currentRole === 'clinician' && query) ? buildFeedbackHtml(id, query) : '';
+  const cacheHtml    = (currentRole === 'clinician' && query)
+    ? buildCacheHtml(id, query, text, evidence, verification, temporal, cacheHit, cachedQuery)
+    : '';
+
+  row.innerHTML = `
+    <div class="bot-avatar">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z
+                 M13 17h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+      </svg>
+    </div>
+    <div class="message-content">
+      <div class="message-bubble">${renderMd(text)}</div>
+      ${badges ? `<div class="message-footer">${badges}</div>` : ''}
+      ${reportPanel}
+      ${cacheHtml}
+      ${feedbackHtml}
+    </div>`;
+
+  appendMessage(row);
+}
+
+// Approximates the real pipeline order (see pipeline/orchestrator.py):
+// retrieve passages -> generate answer -> verify -> extract/ground evidence -> format citations.
+// The backend call is a single blocking request with no progress events, so this is a timed
+// simulation, not a true readout of backend state — it advances once then holds on the last label.
+const TYPING_STAGES = [
+  { delay: 0,    label: 'Retrieving guidelines'  },
+  { delay: 2200, label: 'Generating answer'      },
+  { delay: 5200, label: 'Verifying accuracy'     },
+  { delay: 7800, label: 'Grounding evidence'      },
+  { delay: 9200, label: 'Formatting citations'   },
+];
+
+function addTypingIndicator() {
+  const id  = 'typing-' + Date.now();
+  const row = el('div', 'message-row bot');
+  row.id    = id;
+  row.innerHTML = `
+    <div class="bot-avatar">
+      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/></svg>
+    </div>
+    <div class="typing-indicator">
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+      <div class="typing-dot"></div>
+      <div class="typing-status">${TYPING_STAGES[0].label}</div>
+    </div>`;
+  appendMessage(row);
+
+  const timers = TYPING_STAGES.slice(1).map(stage => setTimeout(() => {
+    const statusEl = document.querySelector(`#${id} .typing-status`);
+    if (statusEl) statusEl.textContent = stage.label;
+  }, stage.delay));
+  typingTimers.set(id, timers);
+
+  return id;
+}
+
+function removeTypingIndicator(id) {
+  const timers = typingTimers.get(id);
+  if (timers) { timers.forEach(clearTimeout); typingTimers.delete(id); }
+  const e = document.getElementById(id);
+  if (e) e.remove();
+}
+
+function appendMessage(elem) {
+  const c = document.getElementById('messages');
+  c.appendChild(elem);
+  c.scrollTop = c.scrollHeight;
+}
+
+/* ─── Markdown + citation renderer ───────────────────── */
+function renderMd(raw) {
+  let t = escHtml(raw);
+  t = t.replace(/\*\*(.+?)\*\*/g,    '<strong>$1</strong>');
+  t = t.replace(/\*([^*\n]+?)\*/g,   '<em>$1</em>');
+  t = t.replace(/(↳\s*[^\n]+)/g, '<div class="drift-note">$1</div>');
+  // Unverifiable citations (flagged by pipeline/utils/citation_formatter.py because they don't
+  // match any uploaded guideline) — render as a plain warning, not a clickable evidence pill.
+  t = t.replace(/(\[⚠[^\]]+\])/g, (full) =>
+    `<span class="citation-unverified" title="This source was not found in the uploaded guideline corpus — treat with caution">${full}</span>`
+  );
+  t = t.replace(/(\[[A-Z][a-zA-Z\-]+ et al\. \d{4}, p\.\d+\])/g, (full) =>
+    `<span class="citation" onclick="citationClick('${full}')" title="View evidence">${full}</span>`
+  );
+
+  const lines  = t.split('\n');
+  const output = [];
+  let inUl = false, inOl = false;
+
+  for (const line of lines) {
+    const ulMatch = line.match(/^\s*[-•]\s+(.+)$/);
+    const olMatch = line.match(/^\s*\d+\.\s+(.+)$/);
+    const h4Match = line.match(/^###\s+(.+)$/);
+
+    if (ulMatch) {
+      if (!inUl) { if (inOl) { output.push('</ol>'); inOl = false; } output.push('<ul>'); inUl = true; }
+      output.push(`<li>${ulMatch[1]}</li>`);
+    } else if (olMatch) {
+      if (!inOl) { if (inUl) { output.push('</ul>'); inUl = false; } output.push('<ol>'); inOl = true; }
+      output.push(`<li>${olMatch[1]}</li>`);
+    } else {
+      if (inUl) { output.push('</ul>'); inUl = false; }
+      if (inOl) { output.push('</ol>'); inOl = false; }
+      if (h4Match) {
+        output.push(`<h4>${h4Match[1]}</h4>`);
+      } else if (line.startsWith('<div class="drift-note">')) {
+        output.push(line);
+      } else if (line.trim() === '') {
+        output.push('<p></p>');
+      } else {
+        output.push(line + '<br>');
+      }
+    }
+  }
+  if (inUl) output.push('</ul>');
+  if (inOl) output.push('</ol>');
+  return output.join('\n');
+}
+
+/* ─── Evidence panel ─────────────────────────────────── */
+function renderEvidence() {
+  const items = Array.from(evidenceMap.values());
+  const list  = document.getElementById('evidence-list');
+  const count = document.getElementById('evidence-count');
+
+  if (!items.length) {
+    count.textContent = 'No sources cited yet';
+    list.innerHTML = `
+      <div class="evidence-empty">
+        <div class="evidence-empty-icon">📄</div>
+        <p>Guideline passages cited in the conversation will appear here.</p>
+      </div>`;
+    return;
+  }
+
+  count.textContent = `${items.length} source${items.length !== 1 ? 's' : ''} this session`;
+
+  list.innerHTML = items.map((item, i) => `
+    <div class="evidence-card"
+         id="evcard-${i}"
+         data-key="${escHtml(item.citation_key)}"
+         onclick="highlightCard(${i})">
+      <div class="evidence-card-header">
+        <div class="evidence-author">${escHtml(item.author)}</div>
+        <span class="evidence-page">p.&thinsp;${item.page}</span>
+      </div>
+      <div class="evidence-topic">${escHtml(item.topic)}</div>
+      ${item.is_update ? `<div class="evidence-update-badge" title="This document contains explicit ASCO update/focused-update language, detected at upload time">🔄 Updated guideline</div>` : ''}
+      <div class="evidence-text">${escHtml(item.text)}</div>
+      <button class="evidence-pdf-btn" onclick="openPdf(event,${i})">
+        📄 View in PDF
+      </button>
+    </div>`).join('');
+}
+
+function clearEvidence() {
+  evidenceMap = new Map();
+  document.getElementById('evidence-count').textContent = 'Ask a question to see sources';
+  document.getElementById('evidence-list').innerHTML = `
+    <div class="evidence-empty">
+      <div class="evidence-empty-icon">📄</div>
+      <p>Guideline passages cited in the conversation will appear here.</p>
+    </div>`;
+}
+
+function citationClick(key) {
+  const items = Array.from(evidenceMap.values());
+  let found = false;
+  items.forEach((item, i) => {
+    if (item.citation_key === key) { highlightCard(i); found = true; }
+  });
+  if (!found) {
+    const hdr = document.querySelector('.evidence-header');
+    hdr.style.background = 'var(--blue-light)';
+    setTimeout(() => hdr.style.background = '', 400);
+  }
+}
+
+function highlightCard(i) {
+  document.querySelectorAll('.evidence-card').forEach(c => c.classList.remove('highlighted'));
+  const card = document.getElementById(`evcard-${i}`);
+  if (card) {
+    card.classList.add('highlighted');
+    card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+}
+
+/* ─── Verification badges + expandable reports ───────── */
+// Badges are buttons that toggle a full report panel (buildVerificationPanel)
+// instead of relying on a native title-attribute hover tooltip, which is easy
+// to miss and can't hold more than a line of unformatted text.
+function buildBadges(v, t, msgId) {
+  let html = '';
+  if (v) {
+    const cls   = v.verdict === 'VERIFIED' ? 'verified'
+                : v.verdict === 'PARTIALLY_VERIFIED' ? 'partial'
+                : v.verdict === 'UNVERIFIED' ? 'unverified' : null;
+    const label = v.verdict === 'VERIFIED' ? '✓ Verified'
+                : v.verdict === 'PARTIALLY_VERIFIED' ? '⚠ Partially verified'
+                : v.verdict === 'UNVERIFIED' ? '✗ Unverified' : null;
+    if (cls) {
+      html += `<button type="button" class="badge ${cls}" id="badge-factual-${msgId}"
+                       onclick="toggleReport('${msgId}','factual')">${label}</button>`;
+    }
+  }
+  if (t && t.verdict === 'OUTDATED') {
+    html += `<button type="button" class="badge outdated" id="badge-temporal-${msgId}"
+                     onclick="toggleReport('${msgId}','temporal')">🕐 Outdated guidelines</button>`;
+  }
+  return html;
+}
+
+function buildVerificationPanel(msgId, v, t) {
+  let sections = '';
+  if (v) {
+    sections += `
+      <div class="verification-report-section" data-kind="factual">
+        <div class="verification-report-title">Factual verification report</div>
+        <div class="verification-report-body">${escHtml(v.verification_text || 'No details provided.')}</div>
+      </div>`;
+  }
+  if (t && t.verdict === 'OUTDATED') {
+    sections += `
+      <div class="verification-report-section" data-kind="temporal">
+        <div class="verification-report-title">Temporal verification report</div>
+        <div class="verification-report-body">${escHtml(t.verification_text || 'No details provided.')}</div>
+      </div>`;
+  }
+  if (!sections) return '';
+  return `<div class="verification-panel" id="vpanel-${msgId}">${sections}</div>`;
+}
+
+function toggleReport(msgId, kind) {
+  const panel = document.getElementById(`vpanel-${msgId}`);
+  if (!panel) return;
+
+  const alreadyOpenOnThisKind = panel.classList.contains('open') && panel.dataset.activeKind === kind;
+
+  document.querySelectorAll(`#${msgId} .badge`).forEach(b => b.classList.remove('active'));
+
+  if (alreadyOpenOnThisKind) {
+    panel.classList.remove('open');
+    panel.dataset.activeKind = '';
+    return;
+  }
+
+  panel.querySelectorAll('.verification-report-section').forEach(sec => {
+    sec.style.display = sec.dataset.kind === kind ? 'block' : 'none';
+  });
+  panel.classList.add('open');
+  panel.dataset.activeKind = kind;
+
+  const badge = document.getElementById(`badge-${kind}-${msgId}`);
+  if (badge) badge.classList.add('active');
+}
+
+/* ─── Cache ──────────────────────────────────────────── */
+const _cachePayloads = {};
+
+function buildCacheHtml(msgId, query, answer, evidence, verification, temporal, cacheHit, cachedQuery) {
+  _cachePayloads[msgId] = { query, answer, evidence, verification, temporal };
+  const hitNote  = cacheHit
+    ? `<span class="cache-hit-note">⚡ From cache${cachedQuery && cachedQuery !== query ? ' (similar question)' : ''}</span>`
+    : '';
+  const rerunBtn = cacheHit
+    ? `<button class="cache-btn rerun" onclick="rerunQuery('${escHtml(query)}')">↺ Re-run</button>`
+    : '';
+  return `
+    <div class="cache-actions">
+      ${hitNote}${rerunBtn}
+      <button class="cache-btn" onclick="quickSaveCache('${msgId}')">💾 Save answer</button>
+      <button class="cache-btn" onclick="toggleReview('${msgId}')">✏ Review &amp; save</button>
+    </div>
+    <div class="review-panel" id="review-${msgId}">
+      <label>Edit answer before saving:</label>
+      <textarea class="review-textarea" id="review-text-${msgId}">${escHtml(answer)}</textarea>
+      <div class="review-actions">
+        <button class="review-save-btn" onclick="saveReviewedCache('${msgId}','${escHtml(query)}')">Save to cache</button>
+        <button class="review-cancel-btn" onclick="toggleReview('${msgId}')">Cancel</button>
+      </div>
+    </div>`;
+}
+
+function toggleReview(msgId) {
+  const panel = document.getElementById(`review-${msgId}`);
+  if (!panel) return;
+  panel.classList.toggle('open');
+  if (panel.classList.contains('open')) {
+    const ta = document.getElementById(`review-text-${msgId}`);
+    if (ta && _cachePayloads[msgId]) ta.value = _cachePayloads[msgId].answer;
+  }
+}
+
+async function quickSaveCache(msgId) {
+  const p = _cachePayloads[msgId];
+  if (!p) return;
+  await _doSaveCache(p.query, p.answer, p.evidence, p.verification, p.temporal, msgId, 'save');
+}
+
+async function saveReviewedCache(msgId, query) {
+  const ta = document.getElementById(`review-text-${msgId}`);
+  if (!ta) return;
+  const editedAnswer = ta.value.trim();
+  if (!editedAnswer) return;
+  const p = _cachePayloads[msgId];
+  await _doSaveCache(query, editedAnswer, p?.evidence || [], p?.verification, p?.temporal, msgId, 'review');
+  document.getElementById(`review-${msgId}`)?.classList.remove('open');
+  if (p) p.answer = editedAnswer;
+}
+
+async function _doSaveCache(query, answer, evidence, verification, temporal, msgId, source) {
+  try {
+    const resp = await fetch('/api/cache/save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query, answer, role: currentRole, evidence: evidence || [],
+                             verification: verification || null, temporal_verification: temporal || null }),
+    });
+    if (!resp.ok) throw new Error('Save failed');
+    const btn = document.querySelector(
+      source === 'review' ? `#review-${msgId} .review-save-btn` : `#${msgId} .cache-btn:not(.rerun)`
+    );
+    if (btn) { btn.textContent = '✓ Saved'; btn.disabled = true; btn.style.opacity = '.6'; }
+  } catch (e) { alert('Failed to save to cache. Please try again.'); }
+}
+
+async function rerunQuery(query) {
+  if (isLoading) return;
+  const field = document.getElementById('input-field');
+  field.value = query;
+  isLoading = true;
+  document.getElementById('send-btn').disabled = true;
+  hideWelcome();
+  addUserMessage(query + ' [re-run]');
+  const typingId = addTypingIndicator();
+  try {
+    const resp = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ session_id: sessionId, query, role: currentRole, force_refresh: true }),
+    });
+    const data = await resp.json();
+    if (!resp.ok) {
+      removeTypingIndicator(typingId);
+      addBotMessage(`⚠ Error: ${data.detail || resp.status}`, [], null, null, null, false, null);
+      return;
+    }
+    sessionId = data.session_id;
+    lastAnswer = data.answer;
+    evidenceMap = new Map();
+    for (const ev of data.all_evidence || []) evidenceMap.set(`${ev.filename}|${ev.page}`, ev);
+    removeTypingIndicator(typingId);
+    renderEvidence();
+    addBotMessage(data.answer, data.evidence || [], data.verification, data.temporal_verification, query, false, null);
+    loadHistoryList();
+  } catch (err) {
+    removeTypingIndicator(typingId);
+    addBotMessage(`⚠ Error: ${err.message}`, [], null, null, null, false, null);
+  } finally {
+    isLoading = false;
+    field.value = '';
+    field.style.height = '';
+    document.getElementById('send-btn').disabled = false;
+  }
+}
+
+/* ─── Clinician feedback ─────────────────────────────── */
+function buildFeedbackHtml(msgId, query) {
+  const safeQ = escHtml(query);
+  return `
+    <div>
+      <button class="feedback-toggle" onclick="toggleFeedback('${msgId}')">✎ Provide correction</button>
+      <div class="feedback-form" id="fb-${msgId}">
+        <textarea class="feedback-textarea" id="fb-text-${msgId}"
+                  placeholder="Describe what was incorrect or missing…"></textarea>
+        <button class="feedback-submit" onclick="submitFeedback('${msgId}','${safeQ}')">Submit correction</button>
+      </div>
+    </div>`;
+}
+
+function toggleFeedback(id) { document.getElementById(`fb-${id}`).classList.toggle('open'); }
+
+async function submitFeedback(msgId, query) {
+  const ta = document.getElementById(`fb-text-${msgId}`);
+  const correction = ta.value.trim();
+  if (!correction) return;
+  try {
+    await fetch('/api/feedback', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query, original_answer: lastAnswer, correction }),
+    });
+    ta.value = '';
+    document.getElementById(`fb-${msgId}`).classList.remove('open');
+    const btn = document.querySelector(`#${msgId} .feedback-toggle`);
+    if (btn) { btn.textContent = '✓ Correction saved'; btn.style.color = 'var(--green)'; }
+  } catch (e) { alert('Failed to save correction. Please try again.'); }
+}
+
+/* ─── PDF modal ──────────────────────────────────────── */
+function openPdf(event, evidenceIndex) {
+  event.stopPropagation();
+  const items = Array.from(evidenceMap.values());
+  const item  = items[evidenceIndex];
+  if (!item) return;
+
+  document.getElementById('modal-title').textContent =
+    `${item.author || 'Guideline'}  ·  p. ${item.page}`;
+
+  const allTexts = (item.all_texts && item.all_texts.length) ? item.all_texts : [item.text || ''];
+  // Send the FULL passage text — the viewer normalises it, locates it in the
+  // page's text layer, and highlights exactly the matched lines. Strip the
+  // display ellipsis added by the evidence extractor's 600-char cap.
+  const snippets = allTexts
+    .map((t, rank) => ({ text: (t || '').replace(/…$/, '').replace(/\s+/g, ' ').trim(), rank }))
+    .filter(s => s.text.length > 20);
+
+  // Full passages can exceed URL limits — hand them to the same-origin viewer
+  // iframe via sessionStorage and pass only the key in the query string.
+  const snippetsKey = 'live-snippets';
+  sessionStorage.setItem(snippetsKey, JSON.stringify(snippets));
+
+  const fileParam = encodeURIComponent(item.pdf_url || '');
+  const viewerUrl = `/pdfjs/web/viewer.html?file=${fileParam}&liveSnippetsKey=${snippetsKey}#page=${item.page}`;
+
+  document.getElementById('pdf-iframe').src = viewerUrl;
+  document.getElementById('pdf-modal').classList.add('open');
+}
+
+function closePdfModal(event) {
+  if (event && event.target !== document.getElementById('pdf-modal')) return;
+  document.getElementById('pdf-modal').classList.remove('open');
+  document.getElementById('pdf-iframe').src = 'about:blank';
+}
+
+/* ─── Input helpers ──────────────────────────────────── */
+function handleKeydown(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 160) + 'px';
+}
+
+/* ─── Utilities ──────────────────────────────────────── */
+function el(tag, cls) {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  return e;
+}
+
+function escHtml(str) {
+  if (str == null) return '';
+  return String(str)
+    .replace(/&/g,  '&amp;')
+    .replace(/</g,  '&lt;')
+    .replace(/>/g,  '&gt;')
+    .replace(/"/g,  '&quot;')
+    .replace(/'/g,  '&#x27;');
+}
+</script>
+</body>
+</html>
