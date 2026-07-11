@@ -1,4 +1,4 @@
-# SentryLive -- EMNLP System Demonstration
+# SentryLive - EMNLP System Demonstration
 
 Grounded, verified oncology guideline QA. See `EMNLP_System_Description.md`
 for full architecture details.
