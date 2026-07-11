@@ -1,4 +1,4 @@
-# SentryLive - Evidence-Grounded Question Answering over Evolving Documents in Oncology Care
+# SentryLive: Evidence-Grounded Question Answering over Evolving Documents in Oncology Care
 
 Grounded, verified oncology guideline QA. See `EMNLP_System_Description.md`
 for full architecture details.
